@@ -1,13 +1,14 @@
-/**
- * @format
- */
-
 import React from 'react';
-import ReactTestRenderer from 'react-test-renderer';
+import { render } from '@testing-library/react-native';
 import App from '../App';
 
-test('renders correctly', async () => {
-  await ReactTestRenderer.act(() => {
-    ReactTestRenderer.create(<App />);
+jest.mock('../src/navigation/Navigator.tsx', () => {
+  return jest.fn(() => null);
+});
+
+describe('App Component', () => {
+  it('renders correctly', () => {
+    const { toJSON } = render(<App />);
+    expect(toJSON()).toMatchSnapshot();
   });
 });
