@@ -11,18 +11,42 @@ interface SectionHeaderProps {
 const getSectionIcon = (section: string) => {
   switch (section) {
     case 'Morning':
-      return <Image source={ICONS.Sun as ImageSourcePropType} style={styles.icon} accessibilityLabel="Morning Sun Icon" role="img"/>; // Type assertion
+      return (
+        <Image
+          source={ICONS.Sun as ImageSourcePropType}
+          style={styles.icon}
+          accessibilityLabel="Morning Sun Icon"
+          role="img"
+        />
+      ); // Type assertion
     case 'Afternoon':
-      return <Image source={ICONS.Afternoon as ImageSourcePropType} style={styles.icon} accessibilityLabel="Afternoon Tea Icon" role="img"/>; // Type assertion
+      return (
+        <Image
+          source={ICONS.Afternoon as ImageSourcePropType}
+          style={styles.icon}
+          accessibilityLabel="Afternoon Tea Icon"
+          role="img"
+        />
+      ); // Type assertion
     case 'Evening':
-      return <Image source={ICONS.Evening as ImageSourcePropType} style={styles.icon} accessibilityLabel="Evening Moon Icon" role="img"/>; // Type assertion
+      return (
+        <Image
+          source={ICONS.Evening as ImageSourcePropType}
+          style={styles.icon}
+          accessibilityLabel="Evening Moon Icon"
+          role="img"
+        />
+      ); // Type assertion
     default:
       return null;
   }
 };
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({section}) => (
-  <View style={styles.sectionHeader} role="row">
+  <View
+    style={styles.sectionHeader}
+    accessible={true}
+    accessibilityLabel={`${section} Section`}>
     {getSectionIcon(section)}
     <Text style={styles.sectionTitle}>{section}</Text>
   </View>

@@ -25,134 +25,144 @@ import CardItem from '../components/CardItem';
  * Interface for card items displayed in the FlatList.
  */
 interface CardItemProps {
-    id: string;
-    title: string;
-    subtitle: string;
-    section: string;
-  }
+  id: string;
+  title: string;
+  subtitle: string;
+  section: string;
+}
+
+/**
+ * Daily Component - Displays user progress, sections, and activity recommendations.
+ */
+const Daily: React.FC = () => {
+  const [progress, setProgress] = useState<number>(10);
 
   /**
-   * Daily Component - Displays user progress, sections, and activity recommendations.
+   * Increases progress bar value, ensuring it does not exceed 100.
    */
-  const Daily: React.FC = () => {
-    const [progress, setProgress] = useState<number>(10);
-
-    /**
-     * Increases progress bar value, ensuring it does not exceed 100.
-     */
-    const increaseProgress = () => {
-      setProgress((prev) => (prev < 100 ? prev + 10 : 100));
-    };
-
-    /**
-     * Renders each item in the FlatList while adding section headers when needed.
-     * @param item - CardItemProps object containing id, title, subtitle, and section.
-     * @param index - Position of the item in the list.
-     */
-    const renderItem = useCallback(
-      ({ item, index }: { item: CardItemProps; index: number }) => {
-        const showHeader = index === 0 || DATA[index - 1]?.section !== item.section; // Added optional chaining
-        return (
-          <View>
-            {showHeader && <SectionHeader section={item.section} />}
-            <CardItem item={item} />
-          </View>
-        );
-      },
-      [], // Added DATA to dependency array
-    );
-
-    /**
-     * Extracts unique key for each FlatList item.
-     * @param item - CardItemProps object.
-     */
-    const keyExtractor = useCallback((item: CardItemProps) => item.id, []);
-
-    return (
-      <View style={styles.container}>
-        {/* Header Section */}
-        <View style={styles.headerContainer} testID="header-container"> {/* Added testID */}
-          <View style={styles.innerHeader}>
-            <Text style={styles.titleText} testID="greeting-text">{GetGreeting()}</Text> {/* Added testID */}
-            <Text style={styles.subTitleText}>{Strings.tryThoseActivity}</Text>
-            <Pressable style={styles.btnStyle} onPress={increaseProgress} testID="reminder-button"> {/* Added testID */}
-              <Image source={ICONS.Notify} style={styles.iconStyle} />
-              <Text style={styles.btnText}>{Strings.setReminder}</Text>
-            </Pressable>
-          </View>
-          <Image source={IMAGES.Care} style={styles.image} />
-        </View>
-
-        {/* Content Section */}
-        <ScrollView
-          style={styles.scrollView}
-          bounces={false}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Progress Section */}
-          <View style={styles.middleContainer}>
-            <Text style={styles.middleTitle}>{Strings.finishExercises}</Text>
-            <ProgressBar progress={progress} />
-            <View style={styles.innerMiddle}>
-              <Image source={ICONS.Fire} style={styles.iconStyle} />
-              <Text style={[styles.middleTitle, { paddingLeft: 5 }]}>
-                {Strings.peopleDoing}
-              </Text>
-            </View>
-          </View>
-
-          {/* Gauge Progress Section */}
-          <View style={styles.gaugeCard}>
-            <Text style={styles.gaugeCardTitle}>{Strings.yourAreas}</Text>
-            <View style={styles.gaugeView}>
-              <GaugeProgressBar
-                title={Strings.mentalWellbeing}
-                score={30}
-                scoreChange={7}
-                maxScore={100}
-              />
-              <GaugeProgressBar
-                title={Strings.workLife}
-                score={57}
-                scoreChange={-10}
-                maxScore={100}
-              />
-              <GaugeProgressBar
-                title={Strings.selfEfficacy}
-                score={90}
-                scoreChange={8}
-                maxScore={100}
-              />
-            </View>
-          </View>
-
-          {/* Activity List */}
-          <FlatList
-            data={DATA}
-            keyExtractor={keyExtractor}
-            renderItem={renderItem}
-            contentContainerStyle={{ padding: 15 }}
-            initialNumToRender={4}
-            maxToRenderPerBatch={5}
-            windowSize={7}
-            removeClippedSubviews={true}
-            testID="activity-list" // Added testID
-          />
-
-          {/* Quote Section */}
-          <View style={styles.quotesView}>
-            <Text style={styles.quotesText}>
-              {
-                '"I advise all of my clients to develop a consistent daily routine which includes mindfulness exercises" \n- Linda Rinn, Clinical Psychologist'
-              }
-            </Text>
-          </View>
-        </ScrollView>
-      </View>
-    );
+  const increaseProgress = () => {
+    setProgress(prev => (prev < 100 ? prev + 10 : 100));
   };
 
-  export default Daily;
+  /**
+   * Renders each item in the FlatList while adding section headers when needed.
+   * @param item - CardItemProps object containing id, title, subtitle, and section.
+   * @param index - Position of the item in the list.
+   */
+  const renderItem = useCallback(
+    ({item, index}: {item: CardItemProps; index: number}) => {
+      const showHeader =
+        index === 0 || DATA[index - 1]?.section !== item.section;
+      return (
+        <View>
+          {showHeader && <SectionHeader section={item.section} />}
+          <CardItem item={item} /> {/* This line was the problem */}
+        </View>
+      );
+    },
+    [],
+  );
+
+  /**
+   * Extracts unique key for each FlatList item.
+   * @param item - CardItemProps object.
+   */
+  const keyExtractor = useCallback((item: CardItemProps) => item.id, []);
+
+  return (
+    <View style={styles.container}>
+      {/* Header Section */}
+      <View style={styles.headerContainer} testID="header-container">
+        {' '}
+        {/* Added testID */}
+        <View style={styles.innerHeader}>
+          <Text style={styles.titleText} testID="greeting-text">
+            {GetGreeting()}
+          </Text>{' '}
+          {/* Added testID */}
+          <Text style={styles.subTitleText}>{Strings.tryThoseActivity}</Text>
+          <Pressable
+            style={styles.btnStyle}
+            onPress={increaseProgress}
+            testID="reminder-button">
+            {' '}
+            {/* Added testID */}
+            <Image source={ICONS.Notify} style={styles.iconStyle} />
+            <Text style={styles.btnText}>{Strings.setReminder}</Text>
+          </Pressable>
+        </View>
+        <Image source={IMAGES.Care} style={styles.image} />
+      </View>
+
+      {/* Content Section */}
+      <ScrollView
+        style={styles.scrollView}
+        bounces={false}
+        showsVerticalScrollIndicator={false}>
+        {/* Progress Section */}
+        <View style={styles.middleContainer}>
+          <Text style={styles.middleTitle}>{Strings.finishExercises}</Text>
+          <ProgressBar progress={progress} />
+          <View style={styles.innerMiddle}>
+            <Image source={ICONS.Fire} style={styles.iconStyle} />
+            <Text style={[styles.middleTitle, {paddingLeft: 5}]}>
+              {Strings.peopleDoing}
+            </Text>
+          </View>
+        </View>
+
+        {/* Gauge Progress Section */}
+        <View style={styles.gaugeCard}>
+          <Text style={styles.gaugeCardTitle}>{Strings.yourAreas}</Text>
+          <View style={styles.gaugeView}>
+            <GaugeProgressBar
+              title={Strings.mentalWellbeing}
+              score={30}
+              scoreChange={7}
+              maxScore={100}
+            />
+            <GaugeProgressBar
+              title={Strings.workLife}
+              score={57}
+              scoreChange={-10}
+              maxScore={100}
+            />
+            <GaugeProgressBar
+              title={Strings.selfEfficacy}
+              score={90}
+              scoreChange={8}
+              maxScore={100}
+            />
+          </View>
+        </View>
+
+        {/* Activity List */}
+        <FlatList
+          data={DATA}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem} // Use the renderItem function
+          contentContainerStyle={{padding: 15}}
+          initialNumToRender={4}
+          maxToRenderPerBatch={5}
+          windowSize={7}
+          removeClippedSubviews={true}
+          testID="activity-list"
+        />
+
+        {/* Quote Section */}
+        <View style={styles.quotesView}>
+          <Text style={styles.quotesText}>
+            {
+              '"I advise all of my clients to develop a consistent daily routine which includes mindfulness exercises" \n- Linda Rinn, Clinical Psychologist'
+            }
+          </Text>
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+
+export default Daily;
 /**
  * Styles for the Daily component.
  */

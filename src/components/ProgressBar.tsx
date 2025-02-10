@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Animated, StyleSheet } from 'react-native';
-import { Colors } from '../constants/Colors'; // Make sure this path is correct
+import React, {useEffect, useRef} from 'react';
+import {View, Animated, StyleSheet} from 'react-native';
+import {Colors} from '../constants/Colors'; // Make sure this path is correct
 
 interface ProgressBarProps {
   progress: number; // Progress value (0 - 100)
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({progress}) => {
   const progressAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -15,6 +15,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
       duration: 500,
       useNativeDriver: false, // Consider using true if possible for performance
     }).start();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress]);
 
   return (
@@ -35,7 +36,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
         aria-valuenow={progress} // Set the current progress for screen readers
         aria-valuemin={0}
         aria-valuemax={100}
-
       />
     </View>
   );

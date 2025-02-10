@@ -5,28 +5,35 @@ import {ICONS} from '../../assets/icons';
 import {Fonts} from '../constants/Fonts';
 
 interface CardItemProps {
-    item: {
-      id: string;
-      title: string;
-      subtitle: string;
-      section: string;
-    };
-    onPress?: () => void; // Make onPress optional and add type
-  }
+  item: {
+    id: string;
+    title: string;
+    subtitle: string;
+    section: string;
+  };
+  onPress?: () => void; // Make onPress optional and add type
+}
 
-  const CardItem: React.FC<CardItemProps> = ({ item, onPress }) => (
-    <View style={styles.card} testID="card">
-      <Pressable style={styles.leftCard} onPress={onPress} testID="pressable-area">
-        <View style={styles.cardImage}>
-          <Image source={ICONS.Play} style={styles.icon} testID="play-icon"/>
-        </View>
-      </Pressable>
-      <View style={styles.rightCard}>
-        <Text style={styles.cardTitle} testID="title">{item.title}</Text>
-        <Text style={styles.cardSubtitle} testID="subtitle">{item.subtitle}</Text>
+const CardItem: React.FC<CardItemProps> = ({item, onPress}) => (
+  <View style={styles.card} testID="card">
+    <Pressable
+      style={styles.leftCard}
+      onPress={onPress}
+      testID="pressable-area">
+      <View style={styles.cardImage}>
+        <Image source={ICONS.Play} style={styles.icon} testID="play-icon" />
       </View>
+    </Pressable>
+    <View style={styles.rightCard}>
+      <Text style={styles.cardTitle} testID="title">
+        {item.title}
+      </Text>
+      <Text style={styles.cardSubtitle} testID="subtitle">
+        {item.subtitle}
+      </Text>
     </View>
-  );
+  </View>
+);
 
 const styles = StyleSheet.create({
   card: {
